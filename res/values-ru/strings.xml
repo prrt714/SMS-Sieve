@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SMS Сито</string>
+    <string name="title_section2">ФИЛЬТР/СТАТ</string>
+    <string name="title_section3">АДРЕСА</string>
+    <string name="section3_summary">Отметьте адреса, с которых вы не хотите получать СМС</string>
+    <string name="section2_summary">(Зажмите для удаления фильтра из списка)</string>
+    <string name="section2_empty">Список адресов, с которых вы не хотите принимать СМС, пуст</string>
+    <string name="skipped">"Всего пропущенных СМС: "</string>
+    <string name="remove">"Удалить "</string>
+    <string name="enabled">ВКЛЮЧЕНО</string>
+    <string name="disabled">ВЫКЛЮЧЕНО</string>
+    <string name="share">Отправь список адресов</string>
+    <string name="subject">Список адресов для SMS Сита</string>
+    <string name="input">Введите адреса (разделяй \";\")</string>
+    <string name="add">Добавь</string>
+    <string name="export">Отправь</string>
+    
+</resources>

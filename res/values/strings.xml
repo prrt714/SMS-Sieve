@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SMS Sieve</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_section2">FILTERS/STAT</string>
+    <string name="title_section3">ADDRESSES</string>
+    <string name="section3_summary">Mark addresses you want to skip SMS from</string>
+    <string name="section2_summary">(Long press to remove)</string>
+    <string name="section2_empty">The list of addresses from which you want to skip SMS is empty</string>
+    <string name="skipped">"Total number of SMS skipped: "</string>
+    <string name="remove">"Remove "</string>
+    <string name="enabled">ENABLED</string>
+    <string name="disabled">DISABLED</string>
+    <string name="share">Share the list of filters</string>
+    <string name="subject">List of addresses for SMS Sieve</string>
+    <string name="input">Input addresses (separate by \";\")</string>
+    <string name="add">Add</string>
+    <string name="export">Send</string>
+
+</resources>
