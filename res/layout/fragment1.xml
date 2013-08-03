@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sep2"
         android:padding="8dip"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <LinearLayout
         android:id="@+id/sep3"

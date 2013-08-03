@@ -1,5 +1,10 @@
 package vnd.blueararat.smssieve;
 
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,7 +13,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class Fragment2 extends Fragment {
 
@@ -35,7 +42,14 @@ public class Fragment2 extends Fragment {
 
 					@Override
 					public void onClick(View v) {
-						boolean b = !MainActivity.filters.contains(key);//!list.isItemChecked(pos);
+						boolean b = !MainActivity.filters.contains(key);// !list.isItemChecked(pos);
+						boolean b2 = ((CheckedTextView) v).isChecked();
+						if (b && b2) {
+							Toast.makeText(getContext(),
+									R.string.there_is_regex, Toast.LENGTH_SHORT)
+									.show();
+							return;
+						}
 						Editor et = MainActivity.filters.edit();
 						if (b) {
 							et.putInt(key, 0);
@@ -57,27 +71,6 @@ public class Fragment2 extends Fragment {
 		list.setAdapter(adapter);
 		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		refresh();
-//		 list.setOnItemClickListener(new OnItemClickListener() {
-//		
-//		 @Override
-//		 public void onItemClick(AdapterView<?> parent, View view,
-//		 int position, long id) {
-//		 CheckedTextView v = (CheckedTextView) view;
-//		 boolean b = !v.isChecked();
-//		 v.setChecked(b);
-//		 Editor et = MainActivity.filters.edit();
-//		 String key = MainActivity.addresses.get(position);//
-//		 v.getText().toString();
-//		 if (b) {
-//		 et.putInt(key, 0);
-//		 } else {
-//		 et.remove(key);
-//		 }
-//		 et.commit();
-//		 Fragment1 f2 = (Fragment1) (((MainActivity) getActivity()).fr[1]);
-//		 f2.refresh(null);
-//		 }
-//		 });
 		return rootView;
 	}
 
@@ -86,6 +79,22 @@ public class Fragment2 extends Fragment {
 		for (int i = 0; i < m; i++) {
 			list.setItemChecked(i, MainActivity.filters
 					.contains(MainActivity.addresses.get(i)));
+		}
+		Set<String> set = MainActivity.regex_filters.getAll().keySet();
+		for (String exp : set) {
+			Pattern p = null;
+			try {
+				p = Pattern.compile(exp);
+			} catch (PatternSyntaxException e) {
+				continue;
+			}
+			Matcher mt;
+			for (int i = 0; i < m; i++) {
+				mt = p.matcher(MainActivity.addresses.get(i));
+				if (mt.matches()) {
+					list.setItemChecked(i, true);
+				}
+			}
 		}
 	}
 }

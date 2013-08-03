@@ -6,10 +6,11 @@
     <string name="title_section2">FILTERS/STAT</string>
     <string name="title_section3">ADDRESSES</string>
     <string name="section3_summary">Mark addresses you want to skip SMS from</string>
-    <string name="section2_summary">(Long press to remove)</string>
+    <string name="section2_summary">(Long press to remove or edit)</string>
     <string name="section2_empty">The list of addresses from which you want to skip SMS is empty</string>
     <string name="skipped">"Total number of SMS skipped: "</string>
     <string name="remove">"Remove "</string>
+    <string name="edit">Edit</string>
     <string name="enabled">ENABLED</string>
     <string name="disabled">DISABLED</string>
     <string name="share">Share the list of filters</string>
@@ -17,5 +18,24 @@
     <string name="input">Input addresses (separate by \";\")</string>
     <string name="add">Add</string>
     <string name="export">Send</string>
+    <string name="help">Help</string>
+    <string name="there_is_regex">There is a matching regular expression!</string>
+    <string name="regex">Regular expression</string>
+    <string name="wrong_pattern">has errors</string>
+    <string name="help_title">You may want to use regular expressions. Below are examples. You can mark any, press OK, and they will be added to the list of filters. Then you can edit them. Note that only the sender ID is going to be checked, not the SMS message itself.</string>
+    <string name="recent">Recent matches:</string>
+
+    <string-array name="examples_titles">
+        <item>"(.*)(?i)(shop|buy|sale)(.*)"</item>
+        <item>"[0-9]{1,3}"</item>
+        <item>"[^\\+][0-9]+"</item>
+        <item>"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{3,}"</item>
+    </string-array>
+    <string-array name="examples_explanations">
+        <item>Matches \"shop\", \"buy\", \"buyer\", \"anyshop\", case insensitive.</item>
+        <item>Matches 1-digit, 2-digit or 3-digit numbers</item>
+        <item>Matches all numbers that don\'t have a leading plus.</item>
+        <item>Matches IDs that have at least 1 capital letter , 1 small letter, and 1 digit, with length of at least 3 symbols</item>
+    </string-array>
 
 </resources>

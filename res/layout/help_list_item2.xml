@@ -4,36 +4,33 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="16dip" >
+    android:padding="8dip" >
 
-    <TextView
-        android:id="@+id/text2"
+    <CheckBox
+        android:id="@+id/checkbox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/red" />
+        android:layout_centerVertical="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/text2"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/checkbox2"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/text1"
+            android:id="@+id/title3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/explanation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/regex"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 

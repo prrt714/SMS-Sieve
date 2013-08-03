@@ -3,6 +3,8 @@ package vnd.blueararat.smssieve;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,14 +21,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 
-	static SharedPreferences preferences, filters;
+	static SharedPreferences preferences, filters, regex_filters;
 	static List<String> addresses;
+	static final String REGEX_PART1 = "regex(";
 	Fragment[] fr = new Fragment[2];
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	ViewPager mViewPager;
@@ -36,7 +49,10 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		addresses = getAddresses();
-		filters = getSharedPreferences("filters", MODE_PRIVATE);
+		filters = getSharedPreferences(Receiver.FILTERS, MODE_PRIVATE);
+		regex_filters = getSharedPreferences(Receiver.REGEX_FILTERS,
+				MODE_PRIVATE);
+
 		setContentView(R.layout.activity_main);
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
@@ -83,11 +99,15 @@ public class MainActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.add:
-			final EditText input = new EditText(this);
+			LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+			final View view = inflater.inflate(R.layout.input_dialog, null,
+					false);
+			final EditText input = (EditText) view.findViewById(R.id.input);
+			final CheckBox chb = (CheckBox) view.findViewById(R.id.chb_reg);
+
 			new AlertDialog.Builder(this)
-					// .setTitle(R.string.input)
 					.setMessage(R.string.input)
-					.setView(input)
+					.setView(view)
 					.setPositiveButton(android.R.string.yes,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -95,14 +115,61 @@ public class MainActivity extends FragmentActivity {
 									String str = input.getText().toString();
 									String[] ss = str.split(";");
 									Editor et = MainActivity.filters.edit();
+									Editor et2 = MainActivity.regex_filters
+											.edit();
+									boolean isRegex = (chb.isChecked() && !str
+											.contains(REGEX_PART1));
 									for (String s : ss) {
 										s = s.trim();
-										boolean b = !filters.contains(s);
-										if (b) {
+										if (s.length() == 0)
+											continue;
+										if (isRegex) {
+											if (!regex_filters.contains(s)) {
+												Pattern p = null;
+												try {
+													p = Pattern.compile(s);
+												} catch (PatternSyntaxException e) {
+													Toast.makeText(
+															getApplicationContext(),
+															getString(R.string.regex)
+																	+ " \""
+																	+ s
+																	+ "\" "
+																	+ getString(R.string.wrong_pattern),
+															Toast.LENGTH_SHORT)
+															.show();
+													continue;
+												}
+												et2.putInt(s, 0);
+											}
+										} else if (s.startsWith(REGEX_PART1)) {
+											s = s.substring(6,
+													s.lastIndexOf(")"));
+
+											if (!regex_filters.contains(s)) {
+												Pattern p = null;
+												try {
+													p = Pattern.compile(s);
+												} catch (PatternSyntaxException e) {
+													Toast.makeText(
+															getApplicationContext(),
+															getString(R.string.regex)
+																	+ " \""
+																	+ s
+																	+ "\" "
+																	+ getString(R.string.wrong_pattern),
+															Toast.LENGTH_SHORT)
+															.show();
+													continue;
+												}
+												et2.putInt(s, 0);
+											}
+										} else if (!filters.contains(s)) {
 											et.putInt(s, 0);
 										}
 									}
 									et.commit();
+									et2.commit();
 									((Fragment1) fr[0]).refresh(null);
 									((Fragment2) fr[1]).refresh();
 								}
@@ -116,13 +183,97 @@ public class MainActivity extends FragmentActivity {
 			for (String el : set) {
 				s += ";\n" + el;
 			}
-			s = s.substring(2);
+			boolean b3 = (s.length() != 0);
+			if (b3)
+				s = s.substring(2);
+			set = regex_filters.getAll().keySet();
+			for (String el : set) {
+				s += ";\n" + REGEX_PART1 + el + ")";
+			}
+			if (!b3)
+				s = s.substring(2);
 			Intent shareIntent = ShareCompat.IntentBuilder.from(this)
 					.setType("plain/text").setText(s)
 					// .setChooserTitle(R.string.share)
 					.setSubject(getString(R.string.subject)).getIntent();
 			startActivity(shareIntent);
 
+			break;
+		case R.id.help:
+			View view2 = LayoutInflater.from(this).inflate(
+					R.layout.help_dialog, null, false);
+			ListView lv = (ListView) view2.findViewById(R.id.example_list);
+			final String[] titles = getResources().getStringArray(
+					R.array.examples_titles);
+			final String[] summaries = getResources().getStringArray(
+					R.array.examples_explanations);
+			final boolean[] checked = { false, false, false, false };
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					R.layout.help_list_item2, titles) {
+
+				@Override
+				public View getView(int position, View convertView,
+						ViewGroup parent) {
+					final int n = position;
+					final boolean b4 = regex_filters.contains(titles[n]);
+					View view;
+					TextView title, summary;
+					CheckBox ch;
+					if (convertView == null) {
+						view = LayoutInflater.from(getContext()).inflate(
+								R.layout.help_list_item2, parent, false);
+					} else {
+						view = convertView;
+					}
+
+					try {
+						title = (TextView) view.findViewById(R.id.title3);
+						summary = (TextView) view
+								.findViewById(R.id.explanation);
+						ch = (CheckBox) view.findViewById(R.id.checkbox2);
+					} catch (ClassCastException e) {
+						throw new IllegalStateException(e.toString(), e);
+					}
+					title.setText(titles[position]);
+					summary.setText(summaries[position]);
+					ch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView,
+								boolean isChecked) {
+							checked[n] = isChecked;
+						}
+					});
+					return view;
+				}
+			};
+			lv.setAdapter(adapter);
+
+			new AlertDialog.Builder(this)
+					.setView(view2)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									boolean changed = false;
+									Editor et = regex_filters.edit();
+									for (int i = 0; i < titles.length; i++) {
+										if (checked[i]) {
+											if (!regex_filters
+													.contains(titles[i])) {
+												et.putInt(titles[i], 0);
+												changed = true;
+											}
+										}
+									}
+									if (changed) {
+										et.commit();
+										((Fragment1) fr[0]).refresh(null);
+										((Fragment2) fr[1]).refresh();
+									}
+								}
+							}).setNegativeButton(android.R.string.no, null)
+					.show();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
