@@ -22,8 +22,7 @@
     <string name="there_is_regex">There is a matching regular expression!</string>
     <string name="regex">Regular expression</string>
     <string name="wrong_pattern">has errors</string>
-    <string name="help_title">"You may want to use regular expressions. Below are examples. You can mark any, press "</string>
-    <string name="help_title2">, and they will be added to the list of filters. Then you can edit them. Note that only the sender ID is going to be checked, not the SMS message itself.</string>
+    <string name="help_title">You may want to use regular expressions. Below are examples. You can mark any, press %1$s, and they will be added to the list of filters. Then you can edit them. Note that only the sender ID is going to be checked, not the SMS message itself.</string>
     <string name="recent">Recent matches:</string>
 
     <string-array name="examples_titles">

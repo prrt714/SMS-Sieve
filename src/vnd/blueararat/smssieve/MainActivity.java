@@ -204,9 +204,7 @@ public class MainActivity extends FragmentActivity {
 					R.layout.help_dialog, null, false);
 			ListView lv = (ListView) view2.findViewById(R.id.example_list);
 			TextView ht = (TextView) view2.findViewById(R.id.title);
-			ht.setText(getString(R.string.help_title)
-					+ getString(android.R.string.yes)
-					+ getString(R.string.help_title2));
+			ht.setText(getString(R.string.help_title, getString(android.R.string.yes)));
 			final String[] titles = getResources().getStringArray(
 					R.array.examples_titles);
 			final String[] summaries = getResources().getStringArray(
