@@ -172,7 +172,8 @@ public class Fragment1 extends Fragment {
 															et.remove(key);
 															et.commit();
 															Fragment2 f3 = (Fragment2) (((MainActivity) getActivity()).fr[1]);
-															f3.refresh();
+															if (f3 != null)
+																f3.refresh();
 															refresh(null);
 														}
 
@@ -237,7 +238,8 @@ public class Fragment1 extends Fragment {
 																		0);
 															et.commit();
 															Fragment2 f3 = (Fragment2) (((MainActivity) getActivity()).fr[1]);
-															f3.refresh();
+															if (f3 != null)
+																f3.refresh();
 															refresh(null);
 														}
 													})

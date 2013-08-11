@@ -32,9 +32,9 @@
         <item>"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{3,}"</item>
     </string-array>
     <string-array name="examples_explanations">
-        <item>Matches \"shop\", \"buy\", \"buyer\", \"anyshop\", case insensitive.</item>
+        <item>Matches \"shop\", \"buy\", \"buyer\", \"anyshop\", case insensitive</item>
         <item>Matches 1-digit, 2-digit or 3-digit numbers</item>
-        <item>Matches all numbers that don\'t have a leading plus.</item>
+        <item>Matches all numbers that don\'t have a leading plus</item>
         <item>Matches IDs that have at least 1 capital letter , 1 small letter, and 1 digit, with length of at least 3 symbols</item>
     </string-array>
 
