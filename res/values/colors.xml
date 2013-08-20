@@ -1,6 +1,7 @@
 <resources>
 
     <color name="red">#F77</color>
+    <color name="green">#7F7</color>
     <color name="blue">#33b5e5</color>
     <color name="disabled">#777</color>
     <color name="enabled">#933</color>

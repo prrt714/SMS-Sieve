@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">SMS Сито</string>
-    <string name="title_section2">ФИЛЬТР/СТАТ</string>
-    <string name="title_section3">АДРЕСА</string>
-    <string name="section3_summary">Отметьте адреса, с которых вы не хотите получать СМС</string>
+    <string name="title_section1">ФИЛЬТР/СТАТ</string>
+    <string name="title_section2">АДРЕСА</string>
+    <string name="section3_summary">Отметьте адреса, чтобы добавить в исключения (зеленый флажок) или заблокировать (красный флажок)</string>
     <string name="section2_summary">(Зажмите чтобы отредактировать или удалить фильтр из списка)</string>
     <string name="section2_empty">Список адресов, с которых вы не хотите принимать СМС, пуст</string>
     <string name="skipped">"Всего пропущенных СМС: "</string>
@@ -23,6 +23,11 @@
     <string name="wrong_pattern">с ошибками</string>
     <string name="help_title">Вы возможно захотите использовать регулярные выражения. Ниже примеры. Вы отметьте некоторые, нажмите %1$s, и они будут добавлены в список адресов. Потом вы можете их отредактировать. Имейте ввиду, что эти регулярные выражения проверяют на соответствие только адрес отправителя, а не само SMS сообщение.</string>
     <string name="recent">Последние совпадения:</string>
+    <string name="exception">Исключение</string>
+    <string name="log_empty">Нет записей о пропущенных SMS</string>
+    <string name="title_section3">ЖУРНАЛ SMS</string>
+    <string name="clear_log">Очисти журнал SMS</string>
+    <string name="clear_all_sms">Очисти журнал с пропущенными SMS?</string>
 
     <string-array name="examples_titles">
         <item>"(.*)(?i)(skidk|proda)(.*)"</item>

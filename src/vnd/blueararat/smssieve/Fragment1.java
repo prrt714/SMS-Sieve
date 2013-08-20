@@ -2,13 +2,12 @@ package vnd.blueararat.smssieve;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,9 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Fragment1 extends Fragment {
+
+	private int red, green;
 
 	public Fragment1() {
 	}
@@ -41,6 +41,9 @@ public class Fragment1 extends Fragment {
 		TextView enabled = (TextView) rootView.findViewById(R.id.enabled);
 		TextView tv = (TextView) rootView.findViewById(R.id.textView1);
 		TextView tv2 = (TextView) rootView.findViewById(R.id.textView2);
+
+		green = getActivity().getResources().getColor(R.color.green);
+		red = getActivity().getResources().getColor(R.color.red);
 
 		boolean b = MainActivity.preferences.getBoolean(Receiver.KEY_ENABLED,
 				true);
@@ -79,12 +82,13 @@ public class Fragment1 extends Fragment {
 		if (rootView == null)
 			rootView = getView();
 		final List<String> l2 = new ArrayList<String>();
-		l2.addAll(MainActivity.filters.getAll().keySet());
+		l2.addAll(MainActivity.exceptions.getAll().keySet());
 		final int part1 = l2.size();
-		Set<String> set = MainActivity.regex_filters.getAll().keySet();
-		for (String exp : set) {
-			l2.add(exp);
-		}
+		l2.addAll(MainActivity.regex_exceptions.getAll().keySet());
+		final int part2 = l2.size();
+		l2.addAll(MainActivity.filters.getAll().keySet());
+		final int part3 = l2.size();
+		l2.addAll(MainActivity.regex_filters.getAll().keySet());
 		TextView t = (TextView) rootView.findViewById(R.id.textView2);
 
 		if (l2.isEmpty()) {
@@ -95,7 +99,7 @@ public class Fragment1 extends Fragment {
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				View view;
-				TextView text1, text2, description;
+				TextView text1, text2, description, description2;
 				LayoutInflater inflater = (LayoutInflater) getActivity()
 						.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
 
@@ -110,17 +114,34 @@ public class Fragment1 extends Fragment {
 					text2 = (TextView) view.findViewById(R.id.text2);
 					description = (TextView) view
 							.findViewById(R.id.description);
+					description2 = (TextView) view
+							.findViewById(R.id.description2);
+
 				} catch (ClassCastException e) {
 					throw new IllegalStateException(e.toString(), e);
 				}
 				String s = l2.get(position);
 				text1.setText(s);
 				if (position < part1) {
+					description2.setVisibility(View.VISIBLE);
 					description.setVisibility(View.GONE);
+					text2.setTextColor(green);
+					text2.setText("" + MainActivity.exceptions.getInt(s, 0));
+				} else if (position < part2) {
+					description2.setVisibility(View.VISIBLE);
+					description.setVisibility(View.VISIBLE);
+					text2.setTextColor(green);
+					text2.setText(""
+							+ MainActivity.regex_exceptions.getInt(s, 0));
+				} else if (position < part3) {
+					description2.setVisibility(View.GONE);
+					description.setVisibility(View.GONE);
+					text2.setTextColor(red);
 					text2.setText("" + MainActivity.filters.getInt(s, 0));
 				} else {
+					description2.setVisibility(View.GONE);
 					description.setVisibility(View.VISIBLE);
-
+					text2.setTextColor(red);
 					text2.setText("" + MainActivity.regex_filters.getInt(s, 0));
 				}
 				return view;
@@ -163,6 +184,12 @@ public class Fragment1 extends Fragment {
 																int which) {
 															Editor et = null;
 															if (pos < part1) {
+																et = MainActivity.exceptions
+																		.edit();
+															} else if (pos < part2) {
+																et = MainActivity.regex_exceptions
+																		.edit();
+															} else if (pos < part3) {
 																et = MainActivity.filters
 																		.edit();
 															} else {
@@ -202,36 +229,29 @@ public class Fragment1 extends Fragment {
 															if (str.equals(key))
 																return;
 
-															Editor et = null;
-															boolean isRegular = pos >= part1;
-															if (isRegular) {
-																et = MainActivity.regex_filters
-																		.edit();
+															SharedPreferences sp = null;
+															boolean isRegular = false;
+															if (pos < part1) {
+																sp = MainActivity.exceptions;
+															} else if (pos < part2) {
+																sp = MainActivity.regex_exceptions;
+																isRegular = true;
+															} else if (pos < part3) {
+																sp = MainActivity.filters;
 															} else {
-																et = MainActivity.filters
-																		.edit();
+																sp = MainActivity.regex_filters;
+																isRegular = true;
 															}
-															if (isRegular) {
-																if (!MainActivity.regex_filters
-																		.contains(str)) {
-																	Pattern p = null;
-																	try {
-																		p = Pattern
-																				.compile(str);
-																	} catch (PatternSyntaxException e) {
-																		Toast.makeText(
-																				getActivity(),
-																				getString(R.string.regex)
-																						+ " \""
-																						+ str
-																						+ "\" "
-																						+ getString(R.string.wrong_pattern),
-																				Toast.LENGTH_SHORT)
-																				.show();
-																		return;
-																	}
-																}
+
+															if (sp.contains(str))
+																return;
+															if (isRegular
+																	&& !((MainActivity) getActivity())
+																			.isValid(str)) {
+																return;
 															}
+															Editor et = sp
+																	.edit();
 															et.remove(key);
 															if (str.length() != 0)
 																et.putInt(str,

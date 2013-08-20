@@ -3,22 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:completionThreshold="1"
         android:ems="10" >
 
         <requestFocus />
-    </EditText>
+    </AutoCompleteTextView>
+
+    <CheckBox
+        android:id="@+id/chb_exc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/input"
+        android:text="@string/exception" />
 
     <CheckBox
         android:id="@+id/chb_reg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/input"
+        android:layout_below="@+id/chb_exc"
         android:text="@string/regex" />
 
 </RelativeLayout>

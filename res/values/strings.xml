@@ -3,9 +3,9 @@
 
     <string name="app_name">SMS Sieve</string>
     <string name="action_settings">Settings</string>
-    <string name="title_section2">FILTERS/STAT</string>
-    <string name="title_section3">ADDRESSES</string>
-    <string name="section3_summary">Mark addresses you want to skip SMS from</string>
+    <string name="title_section1">FILTERS/STAT</string>
+    <string name="title_section2">ADDRESSES</string>
+    <string name="section3_summary">Mark addresses to add them to exceptions (green checkmark) or block list (red checkmark)</string>
     <string name="section2_summary">(Long press to remove or edit)</string>
     <string name="section2_empty">The list of addresses from which you want to skip SMS is empty</string>
     <string name="skipped">"Total number of SMS skipped: "</string>
@@ -24,6 +24,11 @@
     <string name="wrong_pattern">has errors</string>
     <string name="help_title">You may want to use regular expressions. Below are examples. You can mark any, press %1$s, and they will be added to the list of filters. Then you can edit them. Note that only the sender ID is going to be checked, not the SMS message itself.</string>
     <string name="recent">Recent matches:</string>
+    <string name="exception">Exception</string>
+    <string name="log_empty">No skipped messages logged</string>
+    <string name="title_section3">SMS LOG</string>
+    <string name="clear_log">Clear SMS log</string>
+    <string name="clear_all_sms">Clear log of blocked SMS?</string>
 
     <string-array name="examples_titles">
         <item>"(.*)(?i)(shop|buy|sale)(.*)"</item>
