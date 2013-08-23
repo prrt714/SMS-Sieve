@@ -73,8 +73,8 @@ public class Receiver extends BroadcastReceiver {
 						}
 						Matcher m = p.matcher(adr);
 						if (m.matches()) {
-							int j = regex_filters.getInt(exp, 0) + 1;
-							Editor et2 = regex_filters.edit();
+							int j = regex_exceptions.getInt(exp, 0) + 1;
+							Editor et2 = regex_exceptions.edit();
 							et2.putInt(exp, j);
 							et2.commit();
 							return;
