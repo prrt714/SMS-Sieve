@@ -1,6 +1,7 @@
 package vnd.blueararat.smssieve;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -87,9 +88,18 @@ public class MainActivity extends FragmentActivity {
 				a.add(result);
 			}
 			c2.close();
-
 		}
 		c1.close();
+		Collections.sort(a);
+		String matches = preferences.getString(Receiver.KEY_MATCHES, "");
+		if (!matches.isEmpty()) {
+			String newadrs[] = matches.split(" ");
+			for (String s : newadrs) {
+				if (!s.isEmpty() && !a.contains(s))
+					a.add(s);
+			}
+		}
+
 		return a;
 	}
 

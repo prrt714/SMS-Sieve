@@ -2,12 +2,12 @@ package vnd.blueararat.smssieve;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -82,13 +82,15 @@ public class Fragment1 extends Fragment {
 		if (rootView == null)
 			rootView = getView();
 		final List<String> l2 = new ArrayList<String>();
-		l2.addAll(MainActivity.exceptions.getAll().keySet());
+		l2.addAll(new TreeSet<String>(MainActivity.exceptions.getAll().keySet()));
 		final int part1 = l2.size();
-		l2.addAll(MainActivity.regex_exceptions.getAll().keySet());
+		l2.addAll(new TreeSet<String>(MainActivity.regex_exceptions.getAll()
+				.keySet()));
 		final int part2 = l2.size();
-		l2.addAll(MainActivity.filters.getAll().keySet());
+		l2.addAll(new TreeSet<String>(MainActivity.filters.getAll().keySet()));
 		final int part3 = l2.size();
-		l2.addAll(MainActivity.regex_filters.getAll().keySet());
+		l2.addAll(new TreeSet<String>(MainActivity.regex_filters.getAll()
+				.keySet()));
 		TextView t = (TextView) rootView.findViewById(R.id.textView2);
 
 		if (l2.isEmpty()) {
