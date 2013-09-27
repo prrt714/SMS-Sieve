@@ -94,7 +94,7 @@ public class Receiver extends BroadcastReceiver {
 				if (filters.contains(adr)) {
 					Time today = new Time(Time.getCurrentTimezone());
 					today.setToNow();
-					String log = font1 + adr + font3 + msgs[0].getMessageBody()
+					String log = font1 + adr + font3 + getMessageBody(msgs)
 							+ font2 + today.format(df) + font3 + br
 							+ preferences.getString(KEY_LOG, "");
 					if (log.length() > max_log_length) {
@@ -131,7 +131,7 @@ public class Receiver extends BroadcastReceiver {
 							Time today = new Time(Time.getCurrentTimezone());
 							today.setToNow();
 							String log = font1 + adr + font3
-									+ msgs[0].getMessageBody() + font2
+									+ getMessageBody(msgs) + font2
 									+ today.format(df) + font3 + br
 									+ preferences.getString(KEY_LOG, "");
 							if (log.length() > max_log_length) {
@@ -162,5 +162,15 @@ public class Receiver extends BroadcastReceiver {
 			}
 		} catch (Exception e) {
 		}
+	}
+
+	private String getMessageBody(SmsMessage[] msgs) {
+		String msgbody = msgs[0].getMessageBody();
+		if (msgs.length > 1) {
+			for (int i = 1; i < msgs.length; i++) {
+				msgbody += msgs[i].getMessageBody();
+			}
+		}
+		return msgbody;
 	}
 }
