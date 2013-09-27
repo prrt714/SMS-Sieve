@@ -186,8 +186,10 @@ public class MainActivity extends FragmentActivity {
 									et2.commit();
 									et3.commit();
 									et4.commit();
-									((Fragment1) fr[0]).refresh(null);
-									((Fragment2) fr[1]).refresh();
+									if (fr[0] != null)
+										((Fragment1) fr[0]).refresh(null);
+									if (fr[1] != null)
+										((Fragment2) fr[1]).refresh();
 								}
 							}).setNegativeButton(android.R.string.no, null)
 					.show();
@@ -293,8 +295,10 @@ public class MainActivity extends FragmentActivity {
 									}
 									if (changed) {
 										et.commit();
-										((Fragment1) fr[0]).refresh(null);
-										((Fragment2) fr[1]).refresh();
+										if (fr[0] != null)
+											((Fragment1) fr[0]).refresh(null);
+										if (fr[1] != null)
+											((Fragment2) fr[1]).refresh();
 									}
 								}
 							}).setNegativeButton(android.R.string.no, null)

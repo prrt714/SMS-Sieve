@@ -152,7 +152,8 @@ public class Fragment2 extends Fragment {
 							image.setImageResource(images[1]);
 						}
 						Fragment1 f2 = (Fragment1) (((MainActivity) getActivity()).fr[0]);
-						f2.refresh(null);
+						if (f2 != null)
+							f2.refresh(null);
 					}
 				});
 				return view;
