@@ -91,6 +91,8 @@ public class Fragment1 extends Fragment {
 		final int part3 = l2.size();
 		l2.addAll(new TreeSet<String>(MainActivity.regex_filters.getAll()
 				.keySet()));
+		if (rootView == null)
+			return;
 		TextView t = (TextView) rootView.findViewById(R.id.textView2);
 
 		if (l2.isEmpty()) {
